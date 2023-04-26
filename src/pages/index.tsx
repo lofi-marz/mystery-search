@@ -28,7 +28,7 @@ function toSearch(query: string) {
 function toLucky(query: string) {
     return toSearch(query) + '&btnI';
 }
-function Kofi() {
+/*function Kofi() {
     return (
         <a href="https://ko-fi.com/Y8Y3KQQUY" target="_blank">
             <img
@@ -41,7 +41,7 @@ function Kofi() {
         </a>
     );
 }
-
+*/
 type SearchFormInputs = { search: string };
 export default function Home({ query }: { query: string }) {
     const [search, setSearch] = useState('');
