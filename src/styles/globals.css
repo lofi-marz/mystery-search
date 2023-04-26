@@ -9,3 +9,21 @@
     }
 }
 
+@layer components {
+    .card {
+        @apply rounded p-3;
+    }
+
+    .card-dark {
+        @apply card bg-dark-950 text-dark-50 transition-all;
+    }
+
+    .card-light {
+        @apply card bg-dark-50 text-dark-950 transition-all;
+    }
+
+    .button {
+
+    }
+}
+

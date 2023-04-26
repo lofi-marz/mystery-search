@@ -12,14 +12,18 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                title: ['Inter', ...defaultTheme.fontFamily.sans],
-                text: ['Inter', ...defaultTheme.fontFamily.sans],
+                title: ['var(--font-title)', ...defaultTheme.fontFamily.sans],
+                body: ['var(--font-body)', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                primary: colors.red[500],
+                primary: '#e76f51',
                 secondary: colors.orange[500],
+                dark: colors.stone,
             },
         },
     },
-    plugins: [require('@tailwindcss/typography')],
+    plugins: [
+        require('@tailwindcss/forms'),
+        require('@tailwindcss/typography'),
+    ],
 };
