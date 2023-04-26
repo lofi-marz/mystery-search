@@ -63,8 +63,8 @@ export default function Home({ query }: { query: string }) {
                 <title>Mystery Search</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <div className="absolute flex h-full w-full items-center justify-center text-[72rem] text-dark-800 opacity-[.5]">
-                <FaSearch className="ml-48" />
+            <div className="absolute flex h-full w-full items-center justify-center text-[72rem] text-dark-800 opacity-[0]">
+                <FaSearch className="md:ml-48" />
             </div>
             <div className="absolute flex h-full w-full flex-col items-center justify-center gap-12 p-6 font-title dark:text-dark-50">
                 <header className="relative px-6 text-center text-6xl font-bold lowercase">
@@ -79,9 +79,9 @@ export default function Home({ query }: { query: string }) {
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                     />
-                    <div className="flex w-full flex-row items-center justify-center gap-5">
+                    <div className="flex w-full flex-row items-center justify-center gap-2 md:gap-5">
                         <button
-                            className="card-light px-6 text-xl"
+                            className="card-light text-xl md:px-6"
                             onClick={(e) => {
                                 e.preventDefault();
                                 postSearch(search).then(
@@ -92,7 +92,7 @@ export default function Home({ query }: { query: string }) {
                             Search
                         </button>
                         <button
-                            className="card-light grow px-6 text-xl sm:grow-0"
+                            className="card-light grow text-xl sm:grow-0 md:px-6"
                             onClick={(e) => {
                                 e.preventDefault();
                                 postSearch(search).then(
