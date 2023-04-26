@@ -7,7 +7,7 @@ import { GetServerSideProps } from 'next';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import * as process from 'process';
+
 import {
     getStrapiContent,
     postStrapiContent,
