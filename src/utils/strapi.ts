@@ -39,17 +39,21 @@ export async function postStrapiContent<T>(
             params
         )} to ${STRAPI_URL}${apiPath} token: ${token}`
     );
-    return axios
-        .post<{ data: T }>(
-            path.join(STRAPI_URL, apiPath) + '?' + qs.stringify(params),
-            { data: params },
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
+    return fetch(path.join(STRAPI_URL, apiPath) + '?' + qs.stringify(params), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ data: params }),
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
-        )
+            console.log(response);
+            return response.json();
+        })
         .then(({ data }) => data.data)
         .catch((e) => {
             console.log(e);
