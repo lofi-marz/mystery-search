@@ -67,25 +67,29 @@ export default function Home({ query }: { query: string }) {
             <div className="absolute mb-[5vh] flex h-full w-full flex-col items-center justify-center gap-12 p-8 font-title dark:text-dark-50">
                 <header className="relative flex flex-col items-center justify-center gap-4 px-6 text-center text-6xl font-bold lowercase md:items-start">
                     <span className="z-50 text-dark-50">Mystery Search</span>
-                    <div className="-mt-4 h-4 w-2/3 ">
+                    <div className="-mt-4 h-4 w-full ">
                         <motion.div
                             variants={underlineVariants}
                             className="bg-gradient h-full w-full"
                             initial="hide"
                             animate="show"
-                            style={{ originX: 0 }}
                         />
                     </div>
                 </header>
                 <form className="flex w-full flex-col items-center justify-center gap-6 font-body lg:w-1/2">
-                    <input
-                        className="card-dark w-full border-0 bg-dark-900 px-6 text-2xl saturate-0 focus:border-0 focus:outline-0"
-                        placeholder="🔎︎"
-                        type="search"
-                        required
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
+                    <div className="card-dark flex w-full flex-row overflow-clip bg-dark-900 p-0 text-2xl saturate-0">
+                        <div className="flex aspect-square items-center justify-center px-6">
+                            <FaSearch />
+                        </div>
+                        <input
+                            className="w-full border-0 bg-dark-900 px-6 py-0 py-4 pr-6 text-2xl saturate-0 focus:border-0 focus:outline-0"
+                            placeholder=""
+                            type="search"
+                            required
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                    </div>
                     <div className="flex w-full flex-row items-center justify-center gap-2 md:gap-5">
                         <button
                             className="button p-5"
