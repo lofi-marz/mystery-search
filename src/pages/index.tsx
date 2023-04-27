@@ -1,10 +1,10 @@
 import Head from 'next/head';
 import clsx from 'clsx';
 import { body, title } from '@/styles/fonts';
-import { motion, Variants } from 'framer-motion';
+import { AnimatePresence, motion, Variants, LayoutGroup } from 'framer-motion';
 import { FaHandSparkles, FaMagic, FaSearch } from 'react-icons/fa';
 import { GetServerSideProps } from 'next';
-import { useState } from 'react';
+import { MouseEventHandler, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
@@ -14,6 +14,7 @@ import {
     StrapiSearch,
 } from '../utils/strapi';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { IconType } from 'react-icons';
 
 export const underlineVariants: Variants = {
     hide: { scaleX: 0 },
@@ -43,13 +44,29 @@ function toLucky(query: string) {
 type SearchFormInputs = { search: string };
 export default function Home({ query }: { query: string }) {
     const [search, setSearch] = useState('');
-
+    const iconMap = {
+        search: FaSearch,
+        magic: FaMagic,
+    };
+    const [icon, setIcon] = useState<keyof typeof iconMap>('search');
+    const Icon = iconMap[icon];
+    console.log(icon, Icon.name);
     const postSearch = async (newSearch: string) => {
         console.log('Creating:', newSearch);
         return postStrapiContent('searches', { search: newSearch }).then(
             (res) => console.log(res)
         );
     };
+
+    const onSearch: MouseEventHandler<HTMLButtonElement> = (e) => {
+        e.preventDefault();
+        postSearch(search).then(() => (window.location.href = toSearch(query)));
+    };
+    const onLucky: MouseEventHandler<HTMLButtonElement> = (e) => {
+        e.preventDefault();
+        postSearch(search).then(() => (window.location.href = toLucky(query)));
+    };
+
     return (
         <main
             className={clsx(
@@ -79,7 +96,7 @@ export default function Home({ query }: { query: string }) {
                 <form className="flex w-full flex-col items-center justify-center gap-6 font-body lg:w-1/2">
                     <div className="card-dark flex w-full flex-row overflow-clip bg-dark-900 p-0 text-2xl saturate-0">
                         <div className="flex aspect-square items-center justify-center px-6">
-                            <FaSearch />
+                            <SearchIcon Icon={Icon} />
                         </div>
                         <input
                             className="w-full border-0 bg-dark-900 px-6 py-0 py-4 pr-6 text-2xl saturate-0 focus:border-0 focus:outline-0"
@@ -90,33 +107,89 @@ export default function Home({ query }: { query: string }) {
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
-                    <div className="flex w-full flex-row items-center justify-center gap-2 md:gap-5">
-                        <button
-                            className="button p-5"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                postSearch(search).then(
-                                    () =>
-                                        (window.location.href = toSearch(query))
-                                );
-                            }}>
-                            <FaSearch />
-                        </button>
-                        <button
-                            className="button p-5"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                postSearch(search).then(
-                                    () =>
-                                        (window.location.href = toLucky(query))
-                                );
-                            }}>
-                            <FaMagic />
-                        </button>
-                    </div>
+                    <Buttons
+                        onSearch={onSearch}
+                        onLucky={onLucky}
+                        onHover={(s) => setIcon(s as keyof typeof iconMap)}
+                    />
                 </form>
             </div>
         </main>
+    );
+}
+
+function SearchIcon({ Icon }: { Icon: IconType }) {
+    return (
+        <motion.div className="" layout>
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={Icon.name}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}>
+                    <Icon />
+                </motion.div>
+            </AnimatePresence>
+        </motion.div>
+    );
+}
+
+function Buttons({
+    onSearch,
+    onLucky,
+    onHover,
+}: {
+    onSearch: MouseEventHandler<HTMLButtonElement>;
+    onLucky: MouseEventHandler<HTMLButtonElement>;
+    onHover: (icon: string) => void;
+}) {
+    return (
+        <motion.div
+            layout
+            transition={{ ease: 'easeOut' }}
+            className="flex w-full flex-row items-center justify-center gap-2 md:gap-5">
+            <LayoutGroup>
+                <IconButton
+                    Icon={FaSearch}
+                    text="Search"
+                    onClick={onSearch}
+                    onHover={() => onHover('search')}
+                    onHoverEnd={() => onHover('search')}
+                />
+                <IconButton
+                    Icon={FaMagic}
+                    text="I'm feeling very lucky"
+                    onClick={onLucky}
+                    onHover={() => onHover('magic')}
+                    onHoverEnd={() => onHover('search')}
+                />
+            </LayoutGroup>
+        </motion.div>
+    );
+}
+
+type IconButtonProps = {
+    Icon: IconType;
+    text: string;
+    onClick: MouseEventHandler<HTMLButtonElement>;
+    onHover: () => void;
+    onHoverEnd: () => void;
+};
+function IconButton({
+    Icon,
+    text,
+    onClick,
+    onHover,
+    onHoverEnd,
+}: IconButtonProps) {
+    return (
+        <motion.button
+            className="button p-5 transition-all"
+            onClick={onClick}
+            onHoverStart={onHover}
+            onHoverEnd={onHoverEnd}>
+            <Icon />
+        </motion.button>
     );
 }
 
