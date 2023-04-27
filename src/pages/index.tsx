@@ -83,7 +83,7 @@ export default function Home({ query }: { query: string }) {
                             onClick={(e) => {
                                 e.preventDefault();
                                 postSearch(search).then(
-                                    () => () =>
+                                    () =>
                                         (window.location.href = toSearch(query))
                                 );
                             }}>
