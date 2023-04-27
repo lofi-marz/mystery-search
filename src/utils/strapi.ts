@@ -12,16 +12,14 @@ export async function getStrapiContent<T>(
     extra = '',
     token = STRAPI_TOKEN
 ): Promise<T | undefined> {
+    const url = `${STRAPI_URL}${apiPath}?${qs.stringify(params)}${extra}`;
     return axios
-        .get<{ data: T }>(
-            path.join(STRAPI_URL, apiPath) + '?' + qs.stringify(params) + extra,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        )
+        .get<{ data: T }>(url, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        })
         .then(({ data }) => data.data)
         .catch((e) => {
             console.log(e);
