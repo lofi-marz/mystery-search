@@ -2,8 +2,8 @@ import axios from 'axios';
 import path from 'path';
 import qs from 'qs';
 
-const STRAPI_URL =
-    process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337/api/';
+const STRAPI_URL = 'https://marimari.tech/cms/api/';
+// process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337/api/';
 const STRAPI_TOKEN = process.env.NEXT_PUBLIC_STRAPI_TOKEN || '';
 
 export async function getStrapiContent<T>(
