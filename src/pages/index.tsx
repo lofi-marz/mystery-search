@@ -82,7 +82,10 @@ export default function Home({ query }: { query: string }) {
                             className="card-light text-xl md:px-6"
                             onClick={(e) => {
                                 e.preventDefault();
-                                postSearch(search).then(() => {});
+                                postSearch(search).then(
+                                    () => () =>
+                                        (window.location.href = toSearch(query))
+                                );
                             }}>
                             Search
                         </button>
