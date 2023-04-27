@@ -12,7 +12,6 @@ export async function getStrapiContent<T>(
     extra = '',
     token = STRAPI_TOKEN
 ): Promise<T | undefined> {
-    console.log(STRAPI_URL, token);
     return axios
         .get<{ data: T }>(
             path.join(STRAPI_URL, apiPath) + '?' + qs.stringify(params) + extra,
@@ -35,7 +34,11 @@ export async function postStrapiContent<T>(
     params: Record<string, unknown> = {},
     token = STRAPI_TOKEN
 ): Promise<T | undefined> {
-    console.log(`Posting ${JSON.stringify(params)} to ${STRAPI_URL}${apiPath}`);
+    console.log(
+        `Posting ${JSON.stringify(
+            params
+        )} to ${STRAPI_URL}${apiPath} token: ${token}`
+    );
     return axios
         .post<{ data: T }>(
             path.join(STRAPI_URL, apiPath) + '?' + qs.stringify(params),
