@@ -12,7 +12,7 @@ export async function getStrapiContent<T>(
     extra = '',
     token = STRAPI_TOKEN
 ): Promise<T | undefined> {
-    console.log(STRAPI_URL);
+    console.log(STRAPI_URL, token);
     return axios
         .get<{ data: T }>(
             path.join(STRAPI_URL, apiPath) + '?' + qs.stringify(params) + extra,

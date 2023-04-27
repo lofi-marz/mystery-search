@@ -15,8 +15,6 @@ import {
 } from '../utils/strapi';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-const STRAPI_TOKEN = process.env.STRAPI_TOKEN ?? '';
-const STRAPI_URL = process.env.STRAPI_URL ?? '';
 export const underlineVariants: Variants = {
     hide: { scaleX: 0 },
     show: { scaleX: 1, transition: { ease: 'easeOut', duration: 2 } },
