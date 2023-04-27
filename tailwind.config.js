@@ -16,9 +16,9 @@ module.exports = {
                 body: ['var(--font-body)', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                primary: '#e76f51',
-                secondary: colors.orange[500],
-                dark: colors.stone,
+                primary: colors.red[500],
+                secondary: colors.violet[500],
+                dark: colors.zinc,
             },
         },
     },

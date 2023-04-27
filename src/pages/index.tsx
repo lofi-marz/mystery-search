@@ -2,7 +2,7 @@ import Head from 'next/head';
 import clsx from 'clsx';
 import { body, title } from '@/styles/fonts';
 import { motion, Variants } from 'framer-motion';
-import { FaSearch } from 'react-icons/fa';
+import { FaHandSparkles, FaMagic, FaSearch } from 'react-icons/fa';
 import { GetServerSideProps } from 'next';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
@@ -64,14 +64,23 @@ export default function Home({ query }: { query: string }) {
             <div className="absolute flex h-full w-full items-center justify-center text-[72rem] text-dark-800 opacity-[0]">
                 <FaSearch className="md:ml-48" />
             </div>
-            <div className="absolute flex h-full w-full flex-col items-center justify-center gap-12 p-6 font-title dark:text-dark-50">
-                <header className="relative px-6 text-center text-6xl font-bold lowercase">
-                    <h1 className="z-50">Mystery Search</h1>
+            <div className="absolute mb-[5vh] flex h-full w-full flex-col items-center justify-center gap-12 p-8 font-title dark:text-dark-50">
+                <header className="relative flex flex-col items-center justify-center gap-4 px-6 text-center text-6xl font-bold lowercase md:items-start">
+                    <span className="z-50 text-dark-50">Mystery Search</span>
+                    <div className="-mt-4 h-4 w-2/3 ">
+                        <motion.div
+                            variants={underlineVariants}
+                            className="bg-gradient h-full w-full"
+                            initial="hide"
+                            animate="show"
+                            style={{ originX: 0 }}
+                        />
+                    </div>
                 </header>
-                <form className="flex w-full flex-col items-center justify-center gap-12 lg:w-1/2">
+                <form className="flex w-full flex-col items-center justify-center gap-6 font-body lg:w-1/2">
                     <input
-                        className="card-light w-full border-0  p-3 px-6 text-2xl focus:border-0 focus:outline-0"
-                        placeholder=""
+                        className="card-dark w-full border-0 bg-dark-900 px-6 text-2xl saturate-0 focus:border-0 focus:outline-0"
+                        placeholder="🔎︎"
                         type="search"
                         required
                         value={search}
@@ -79,7 +88,7 @@ export default function Home({ query }: { query: string }) {
                     />
                     <div className="flex w-full flex-row items-center justify-center gap-2 md:gap-5">
                         <button
-                            className="card-light text-xl md:px-6"
+                            className="button p-5"
                             onClick={(e) => {
                                 e.preventDefault();
                                 postSearch(search).then(
@@ -87,10 +96,10 @@ export default function Home({ query }: { query: string }) {
                                         (window.location.href = toSearch(query))
                                 );
                             }}>
-                            Search
+                            <FaSearch />
                         </button>
                         <button
-                            className="card-light grow text-xl sm:grow-0 md:px-6"
+                            className="button p-5"
                             onClick={(e) => {
                                 e.preventDefault();
                                 postSearch(search).then(
@@ -98,7 +107,7 @@ export default function Home({ query }: { query: string }) {
                                         (window.location.href = toLucky(query))
                                 );
                             }}>
-                            I&apos;m Feeling Very Lucky
+                            <FaMagic />
                         </button>
                     </div>
                 </form>

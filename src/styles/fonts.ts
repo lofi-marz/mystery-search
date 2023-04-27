@@ -9,7 +9,7 @@ import {
     Vollkorn,
 } from 'next/font/google';
 
-export const title = IBM_Plex_Sans({
+export const title = Poppins({
     subsets: ['latin'],
     weight: ['100', '200', '300', '400', '500', '600', '700'],
     variable: '--font-title',
