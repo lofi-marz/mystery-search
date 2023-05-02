@@ -20,13 +20,7 @@ export const underlineVariants: Variants = {
     hide: { scaleX: 0 },
     show: { scaleX: 1, transition: { ease: 'easeOut', duration: 2 } },
 };
-function toSearch(query: string) {
-    return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-}
 
-function toLucky(query: string) {
-    return toSearch(query) + '&btnI';
-}
 /*function Kofi() {
     return (
         <a href="https://ko-fi.com/Y8Y3KQQUY" target="_blank">
@@ -42,7 +36,7 @@ function toLucky(query: string) {
 }
 */
 type SearchFormInputs = { search: string };
-export default function Home({ query }: { query: string }) {
+export default function Home() {
     const [search, setSearch] = useState('');
     const iconMap = {
         search: FaSearch,
@@ -51,21 +45,6 @@ export default function Home({ query }: { query: string }) {
     const [icon, setIcon] = useState<keyof typeof iconMap>('search');
     const Icon = iconMap[icon];
     console.log(icon, Icon.name);
-    const postSearch = async (newSearch: string) => {
-        console.log('Creating:', newSearch);
-        return postStrapiContent('searches', { search: newSearch }).then(
-            (res) => console.log(res)
-        );
-    };
-
-    const onSearch: MouseEventHandler<HTMLButtonElement> = (e) => {
-        e.preventDefault();
-        postSearch(search).then(() => (window.location.href = toSearch(query)));
-    };
-    const onLucky: MouseEventHandler<HTMLButtonElement> = (e) => {
-        e.preventDefault();
-        postSearch(search).then(() => (window.location.href = toLucky(query)));
-    };
 
     return (
         <main
@@ -108,8 +87,7 @@ export default function Home({ query }: { query: string }) {
                         />
                     </div>
                     <Buttons
-                        onSearch={onSearch}
-                        onLucky={onLucky}
+                        searchQuery={encodeURIComponent(search)}
                         onHover={(s) => setIcon(s as keyof typeof iconMap)}
                     />
                 </form>
@@ -135,12 +113,10 @@ function SearchIcon({ Icon }: { Icon: IconType }) {
 }
 
 function Buttons({
-    onSearch,
-    onLucky,
+    searchQuery,
     onHover,
 }: {
-    onSearch: MouseEventHandler<HTMLButtonElement>;
-    onLucky: MouseEventHandler<HTMLButtonElement>;
+    searchQuery: string;
     onHover: (icon: string) => void;
 }) {
     return (
@@ -152,14 +128,14 @@ function Buttons({
                 <IconButton
                     Icon={FaSearch}
                     text="Search"
-                    onClick={onSearch}
+                    href={`/search?q=${searchQuery}`}
                     onHover={() => onHover('search')}
                     onHoverEnd={() => onHover('search')}
                 />
                 <IconButton
                     Icon={FaMagic}
                     text="I'm feeling very lucky"
-                    onClick={onLucky}
+                    href={`/search?q=${searchQuery}&lucky=1`}
                     onHover={() => onHover('magic')}
                     onHoverEnd={() => onHover('search')}
                 />
@@ -171,38 +147,24 @@ function Buttons({
 type IconButtonProps = {
     Icon: IconType;
     text: string;
-    onClick: MouseEventHandler<HTMLButtonElement>;
+    href: string;
     onHover: () => void;
     onHoverEnd: () => void;
 };
 function IconButton({
     Icon,
     text,
-    onClick,
+    href,
     onHover,
     onHoverEnd,
 }: IconButtonProps) {
     return (
-        <motion.button
+        <motion.a
             className="button p-5 transition-all"
-            onClick={onClick}
+            href={href}
             onHoverStart={onHover}
             onHoverEnd={onHoverEnd}>
             <Icon />
-        </motion.button>
+        </motion.a>
     );
 }
-
-export const getServerSideProps: GetServerSideProps = async () => {
-    const res = await getStrapiContent<StrapiSearch[]>(
-        'searches',
-        {
-            sort: 'createdAt',
-        },
-        '%3Adesc'
-    );
-    console.log('Res:', res);
-    const query = res ? res[0].attributes.search : 'What is google';
-
-    return { props: { query } };
-};
